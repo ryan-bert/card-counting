@@ -18,6 +18,8 @@ class Deck(object):
         The deck is automatically shuffled upon initialization.
         """
 
+        self.last_round = False
+
         ranks = ['two', 'three', 'four', 'five', 'six', 'seven', 'eight',
                  'nine', 'ten', 'jack', 'queen', 'king', 'ace']
 
@@ -52,3 +54,12 @@ class Deck(object):
             return self.cards.pop()
         else:
             return None
+
+    def is_empty(self):
+        """
+        Check if the deck is empty.
+
+        Returns:
+            bool: True if the deck is empty, False otherwise.
+        """
+        return len(self.cards) == 0
