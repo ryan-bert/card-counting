@@ -1,4 +1,4 @@
-from Card import Card
+from card import Card
 import random
 
 
