@@ -1,4 +1,4 @@
-class Card:
+class Card(object):
 
     def __init__(self, rank, suit):
         """
