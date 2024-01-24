@@ -37,15 +37,3 @@ class Card(object):
             str: A string representing the card, e.g., 'two of hearts'.
         """
         return f"{self.rank} of {self.suit}"
-
-    def __eq__(self, other):
-        """
-        Checks if two cards are equal based on their numerical values.
-
-        Args:
-            other (Card): Another Card object to compare with.
-
-        Returns:
-            bool: True if the numerical values of the cards are equal, False otherwise.
-        """
-        return self.value == other.value
