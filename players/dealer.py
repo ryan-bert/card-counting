@@ -28,6 +28,10 @@ class Dealer(object):
                 self.hand.value -= 10
                 self.hand.aces -= 1
 
+        # Set up_card field (if applicable)
+        if len(self.hand.cards) > 1:
+            self.up_card = self.hand.cards[1]
+
     def get_decision(self):
 
         # Soft hand
@@ -42,3 +46,12 @@ class Dealer(object):
                 return 'hit'
             else:
                 return 'stand'
+
+    def start_round(self, deck):
+
+        # Pop 2 cards from deck into Dealer's hand
+        self.hand.cards.append(deck.cards.pop())
+        self.hand.cards.append(deck.cards.pop())
+
+        # Set up_card field (if applicable)
+        self.up_card = self.hand.cards[1]
