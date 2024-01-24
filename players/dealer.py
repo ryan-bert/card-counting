@@ -12,7 +12,7 @@ class Dealer(object):
 
         # Remove card from deck and add to dealers hand
         card = deck.cards.pop()
-        self.hand.append(card)
+        self.hand.cards.append(card)
 
         # Update hand value
         self.hand.value += card.value
