@@ -28,7 +28,7 @@ class Dealer(object):
                 self.hand.value -= 10
                 self.hand.aces -= 1
 
-    def decide(self):
+    def get_decision(self):
 
         # Soft hand
         if self.hand.aces > 1:
