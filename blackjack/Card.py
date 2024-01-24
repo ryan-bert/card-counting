@@ -48,4 +48,4 @@ class Card(object):
         Returns:
             bool: True if the numerical values of the cards are equal, False otherwise.
         """
-        return self.value() == other.value()
+        return self.value == other.value
