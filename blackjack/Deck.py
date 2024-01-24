@@ -3,6 +3,7 @@ import random
 
 
 class Deck(object):
+
     def __init__(self, number_of_decks):
         """
         Initialize a deck of cards.
@@ -18,14 +19,13 @@ class Deck(object):
         The deck is automatically shuffled upon initialization.
         """
 
-        self.last_round = False
-
         ranks = ['two', 'three', 'four', 'five', 'six', 'seven', 'eight',
                  'nine', 'ten', 'jack', 'queen', 'king', 'ace']
 
         suits = ['spades', 'hearts', 'diamonds', 'clubs']
 
-        self.cards = []  # Use an instance variable instead of a local variable
+        # Create empty list of Card objects
+        self.cards = []
 
         # Populate the Deck with Card objects
         for i in range(number_of_decks):
@@ -33,27 +33,7 @@ class Deck(object):
                 for rank in ranks:
                     self.cards.append(Card(rank, suit))
 
-        # Printing each card for debugging purposes
-        # for card in self.cards:
-        #     print(card)
-
         random.shuffle(self.cards)
-
-    def deal(self):
-        """
-        Deal a card from the deck.
-
-        Removes and returns the top card of the deck. If the deck is empty, it returns
-        None or can optionally raise an exception.
-
-        Returns:
-            Card: The top card from the deck. Returns None if the deck is empty.
-        """
-
-        if len(self.cards) > 0:
-            return self.cards.pop()
-        else:
-            return None
 
     def is_empty(self):
         """
