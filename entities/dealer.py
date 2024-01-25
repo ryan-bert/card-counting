@@ -39,10 +39,9 @@ class Dealer(object):
 
         # Check if dealer has gone bust:
         if self.hand.value > 21:
-
+            self.goes_bust()
 
     def get_decision(self):
-
         # Soft hand
         if self.hand.aces > 1:
             if self.hand.value < 18:

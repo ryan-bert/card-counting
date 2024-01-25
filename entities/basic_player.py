@@ -6,6 +6,8 @@ from tables.soft_totals import SoftTotals
 from tables.pair_splitting import PairSplitting
 
 
+# TODO: MAKE SPLIT FUNCTION
+
 class BasicPlayer(object):
 
     def __init__(self):
@@ -57,28 +59,6 @@ class BasicPlayer(object):
         elif len(self.hand.cards) == 2 and self.hand.value == 21:
             self.gets_blackjack()
 
-    # Normal round outcome (ie no splits, doubling, etc takes place)
-    def round_outcome(self, win=False, draw=False, loss=False):
-
-        self.rounds += 1
-
-        if win:
-            self.wins += 1
-            # Add bet to total_earnings
-            self.total_earnings += self.current_bet
-
-        elif loss:
-            self.losses += 1
-            # Subtract bet from total_earnings
-            self.total_earnings -= self.current_bet
-
-        elif draw:
-            # total_earnings remains the same
-            self.draws += 1
-
-        # Reset current_bet to 0
-        self.current_bet = 0
-
     def get_decision(self, dealer):
 
         # create function variables
@@ -123,6 +103,11 @@ class BasicPlayer(object):
         self.round_outcome(loss=True)
         print("Player goes bust!!")
 
+    def stands(self):
+        self.is_done = True
+        self.stands += 1
+        print('player stands.')
+
     def start_round(self, deck, bet=10):
 
         # Update bet variables
@@ -132,6 +117,28 @@ class BasicPlayer(object):
         # Pop 2 cards from deck into Player's hand
         self.hit_me(deck)
         self.hit_me(deck)
+
+    # Normal round outcome (ie no splits, doubling, etc takes place)
+    def round_outcome(self, win=False, draw=False, loss=False):
+
+        self.rounds += 1
+
+        if win:
+            self.wins += 1
+            # Add bet to total_earnings
+            self.total_earnings += self.current_bet
+
+        elif loss:
+            self.losses += 1
+            # Subtract bet from total_earnings
+            self.total_earnings -= self.current_bet
+
+        elif draw:
+            # total_earnings remains the same
+            self.draws += 1
+
+        # Reset current_bet to 0
+        self.current_bet = 0
 
     def _search_split_table(self, dealer):
 
