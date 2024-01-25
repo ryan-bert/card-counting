@@ -19,7 +19,7 @@ def round(player, dealer, deck):
         decision = player.get_decision(dealer)
         if decision == 'd':
             print(f'decision: {decision}---------------------------')
-        if decision == 'h':
+        elif decision == 'h':
             player.hit_me(deck)
         elif decision == 's':
             player.stand()
@@ -48,6 +48,8 @@ def round(player, dealer, deck):
     else:
         player.round_outcome(draw=True)
 
+    print(player.hand)
+    print(dealer.hand)
     # Clear hands:
     dealer.hand = Hand()
     player.hand = Hand()
