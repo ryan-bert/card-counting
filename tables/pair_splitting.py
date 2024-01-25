@@ -26,8 +26,3 @@ class PairSplitting(object):
 
     # Set the first column ('soft totals') as the index
     table.set_index('pairs', inplace=True)
-
-
-# # Test
-pair_splitting_df = PairSplitting.table
-print(pair_splitting_df)

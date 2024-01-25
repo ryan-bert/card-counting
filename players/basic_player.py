@@ -1,6 +1,9 @@
 from blackjack.hand import Hand
 from blackjack.card import Card
 from players.dealer import Dealer
+from tables.hard_totals import HardTotals
+from tables.soft_totals import SoftTotals
+from tables.pair_splitting import PairSplitting
 import pandas as pd
 
 
@@ -38,11 +41,15 @@ class BasicPlayer(object):
                 self.hand.value -= 10
                 self.hand.aces -= 1
 
-    def get_decision(self):
+    def get_decision(self, dealer):
 
-        pass
+        # Check for pairs
+        if len(self.hand.cards) == 2:
+            if self.hand.cards[0] == self.hand.cards[1]:
+                return
 
     # Normal round outcome (ie no splits, doubling, etc takes place)
+
     def normal_round_outcome(self, win=False, draw=False, loss=False):
 
         self.rounds += 1
@@ -73,3 +80,27 @@ class BasicPlayer(object):
         # Pop 2 cards from deck into Player's hand
         self.hand.cards.append(deck.cards.pop())
         self.hand.cards.append(deck.cards.pop())
+
+    def search_split_table(self, hand, dealer):
+
+        index = self.hand.cards[0].rank
+        column = dealer.up_card.rank
+
+        # returns 'y' or 'n'
+        return PairSplitting.table.loc[index, column]
+
+    def search_hard_table(self, hand, dealer):
+
+        index = self.hand.value
+        column = dealer.up_card.rank
+
+        # returns 'h', 's' or 'd'
+        return HardTotals.table.loc[index, column]
+
+    def search_soft_table(self, hand, dealer):
+
+        index = self.hand.value
+        column = dealer.up_card.rank
+
+        # returns 'h', 's' or 'd'
+        return SoftTotals.table.loc[index, column]
