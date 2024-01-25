@@ -37,6 +37,10 @@ class Dealer(object):
         if len(self.hand.cards) > 1:
             self.up_card = self.hand.cards[1]
 
+        # Check if dealer has gone bust:
+        if self.hand.value > 21:
+
+
     def get_decision(self):
 
         # Soft hand
@@ -60,3 +64,12 @@ class Dealer(object):
 
         # Set up_card field (if applicable)
         self.up_card = self.hand.cards[1]
+
+    def stand(self):
+        self.is_done = True
+        self.stands += 1
+        print('dealer stands.')
+
+    def goes_bust(self):
+        self.is_done = True
+        print('dealer goes bust!!')
