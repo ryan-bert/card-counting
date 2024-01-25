@@ -1,5 +1,6 @@
 from blackjack.hand import Hand
 from blackjack.card import Card
+from blackjack.deck import Deck
 
 
 class Dealer(object):
@@ -9,6 +10,11 @@ class Dealer(object):
 
     # Dealer stands on hard 17, hits on soft 17 (ie H17 game)
     def hit_me(self, deck):
+
+        # If deck is empty, replace and shuffle deck
+        if deck.is_empty():
+            number_of_decks = deck.number_of_decks()
+            deck = Deck(number_of_decks)
 
         # Remove card from deck and add to dealers hand
         card = deck.cards.pop()
