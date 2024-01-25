@@ -29,11 +29,10 @@ class HardTotals:
     # Create the DataFrame
     table = pd.DataFrame(data)
 
-    # Set the first column ('hard totals') as the index of the DataFrame
+    # Set the first column ('hard totals') as the index
     table.set_index('hard totals', inplace=True)
 
 
-# Access the class attribute to get the DataFrame
-hard_totals_df = HardTotals.df
-
-print(hard_totals_df)
+# # Test
+# hard_totals_df = HardTotals.table
+# print(hard_totals_df)
