@@ -7,6 +7,7 @@ class Dealer(object):
 
     def __init__(self):
         self.hand = Hand()
+        self.is_done = False
 
     # Dealer stands on hard 17, hits on soft 17 (ie H17 game)
     def hit_me(self, deck):
