@@ -40,10 +40,9 @@ class BasicPlayer(object):
             self.hand.aces += 1
 
         # Change ace from 11 to 1 if dealer goes bust with an ace
-        while self.hand.aces > 0:
-            if self.hand.value > 21:
-                self.hand.value -= 10
-                self.hand.aces -= 1
+        while self.hand.aces > 0 and self.hand.value > 21:
+            self.hand.value -= 10
+            self.hand.aces -= 1
 
     # Normal round outcome (ie no splits, doubling, etc takes place)
 
@@ -77,18 +76,18 @@ class BasicPlayer(object):
 
         # check for pair
         if deck_length == 2 and first_two_match:
-            decision = self.search_split_table(self.hand, dealer)
+            decision = self._search_split_table(dealer)
 
         # Handle ace(s)
         elif self.hand.aces > 0:
             # get decision from soft totals table
-            decision = self.search_soft_table(self.hand, dealer)
+            decision = self._search_soft_table(dealer)
             # Can't double if deck_length != 2
             if decision == 'd' and deck_length != 2:
                 decision = 'h'
         # Hard totals (ie  pairs, no aces)
         else:
-            decision = self.search_hard_table(self.hand, dealer)
+            decision = self._search_hard_table(dealer)
             if decision == 'd' and deck_length != 2:
                 decision = 'h'
 
@@ -101,10 +100,10 @@ class BasicPlayer(object):
         self.total_bets += bet
 
         # Pop 2 cards from deck into Player's hand
-        self.hand.cards.append(deck.cards.pop())
-        self.hand.cards.append(deck.cards.pop())
+        self.hit_me(deck)
+        self.hit_me(deck)
 
-    def _search_split_table(self, hand, dealer):
+    def _search_split_table(self, dealer):
 
         index = self.hand.cards[0].rank
         column = dealer.up_card.rank
@@ -112,7 +111,7 @@ class BasicPlayer(object):
         # returns 'y' or 'n'
         return PairSplitting.table.loc[index, column]
 
-    def _search_hard_table(self, hand, dealer):
+    def _search_hard_table(self, dealer):
 
         index = self.hand.value
         column = dealer.up_card.rank
@@ -120,7 +119,7 @@ class BasicPlayer(object):
         # returns 'h', 's' or 'd'
         return HardTotals.table.loc[index, column]
 
-    def _search_soft_table(self, hand, dealer):
+    def _search_soft_table(self, dealer):
 
         index = self.hand.value
         column = dealer.up_card.rank

@@ -19,7 +19,7 @@ def round(player, dealer, deck):
 
     decision = player.get_decision(dealer)
 
-    print(player.hand.cards, dealer.hand.cards,
+    print(player.hand.cards[0], player.hand.cards[1], f'dealer:{dealer.up_card}',
           f'Decision: {decision}', sep='\n')
 
 

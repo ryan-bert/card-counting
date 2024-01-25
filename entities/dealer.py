@@ -29,10 +29,9 @@ class Dealer(object):
             self.hand.aces += 1
 
         # Change ace from 11 to 1 if dealer goes bust with an ace
-        while self.hand.aces > 0:
-            if self.hand.value > 21:
-                self.hand.value -= 10
-                self.hand.aces -= 1
+        while self.hand.aces > 0 and self.hand.value > 21:
+            self.hand.value -= 10
+            self.hand.aces -= 1
 
         # Set up_card field (if applicable)
         if len(self.hand.cards) > 1:
@@ -56,8 +55,8 @@ class Dealer(object):
     def start_round(self, deck):
 
         # Pop 2 cards from deck into Dealer's hand
-        self.hand.cards.append(deck.cards.pop())
-        self.hand.cards.append(deck.cards.pop())
+        self.hit_me(deck)
+        self.hit_me(deck)
 
         # Set up_card field (if applicable)
         self.up_card = self.hand.cards[1]
