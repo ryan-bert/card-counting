@@ -13,7 +13,7 @@ class BasicPlayer(object):
 
         self.current_bet = 0
         self.total_bets = 0
-        self.total_earnings
+        self.total_earnings = 0
 
         self.rounds = 0
         self.wins = 0
@@ -72,24 +72,24 @@ class BasicPlayer(object):
 
         # create function variables
         decision = None
-        len = len(self.hand.cards)
+        deck_length = len(self.hand.cards)
         first_two_match = self.hand.cards[0] == self.hand.cards[1]
 
         # check for pair
-        if len == 2 and first_two_match:
+        if deck_length == 2 and first_two_match:
             decision = self.search_split_table(self.hand, dealer)
 
         # Handle ace(s)
         elif self.hand.aces > 0:
             # get decision from soft totals table
             decision = self.search_soft_table(self.hand, dealer)
-            # Can't double if length != 2
-            if decision == 'd' and len != 2:
+            # Can't double if deck_length != 2
+            if decision == 'd' and deck_length != 2:
                 decision = 'h'
         # Hard totals (ie  pairs, no aces)
         else:
             decision = self.search_hard_table(self.hand, dealer)
-            if decision == 'd' and len != 2:
+            if decision == 'd' and deck_length != 2:
                 decision = 'h'
 
         return decision
