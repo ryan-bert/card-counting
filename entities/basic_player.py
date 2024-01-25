@@ -1,5 +1,6 @@
 from blackjack.hand import Hand
 from blackjack.card import Card
+from blackjack.deck import Deck
 from tables.hard_totals import HardTotals
 from tables.soft_totals import SoftTotals
 from tables.pair_splitting import PairSplitting
