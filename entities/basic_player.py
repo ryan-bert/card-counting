@@ -10,15 +10,20 @@ class BasicPlayer(object):
 
     def __init__(self):
         self.hand = Hand()
-
+        # Variable True if player stands or goes bust
+        self.is_done = False
+        # Financial`metrics`
         self.current_bet = 0
         self.total_bets = 0
         self.total_earnings = 0
-
+        # Incremental metrics
         self.rounds = 0
         self.wins = 0
         self.draws = 0
         self.losses = 0
+        # Busts vs stands (stands include doubling-down)
+        self.busts = 0
+        self.stands = 0
 
     def hit_me(self, deck):
 
