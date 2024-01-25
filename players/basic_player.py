@@ -41,13 +41,6 @@ class BasicPlayer(object):
                 self.hand.value -= 10
                 self.hand.aces -= 1
 
-    def get_decision(self, dealer):
-
-        # Check for pairs
-        if len(self.hand.cards) == 2:
-            if self.hand.cards[0] == self.hand.cards[1]:
-                return
-
     # Normal round outcome (ie no splits, doubling, etc takes place)
 
     def normal_round_outcome(self, win=False, draw=False, loss=False):
@@ -70,6 +63,32 @@ class BasicPlayer(object):
 
         # Reset current_bet to 0
         self.current_bet = 0
+
+    def get_decision(self, dealer):
+
+        # create function variables
+        decision = None
+        len = len(self.hand.cards)
+        first_two_match = self.hand.cards[0] == self.hand.cards[1]
+
+        # check for pair
+        if len == 2 and first_two_match:
+            decision = self.search_split_table(self.hand, dealer)
+
+        # Handle ace(s)
+        elif self.hand.aces > 0:
+            # get decision from soft totals table
+            decision = self.search_soft_table(self.hand, dealer)
+            # Can't double if length != 2
+            if decision == 'd' and len != 2:
+                decision = 'h'
+        # Hard totals (ie  pairs, no aces)
+        else:
+            decision = self.search_hard_table(self.hand, dealer)
+            if decision == 'd' and len != 2:
+                decision = 'h'
+
+        return decision
 
     def start_round(self, deck, bet=10):
 
