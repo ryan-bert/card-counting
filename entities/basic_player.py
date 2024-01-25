@@ -104,7 +104,7 @@ class BasicPlayer(object):
         self.hand.cards.append(deck.cards.pop())
         self.hand.cards.append(deck.cards.pop())
 
-    def search_split_table(self, hand, dealer):
+    def _search_split_table(self, hand, dealer):
 
         index = self.hand.cards[0].rank
         column = dealer.up_card.rank
@@ -112,7 +112,7 @@ class BasicPlayer(object):
         # returns 'y' or 'n'
         return PairSplitting.table.loc[index, column]
 
-    def search_hard_table(self, hand, dealer):
+    def _search_hard_table(self, hand, dealer):
 
         index = self.hand.value
         column = dealer.up_card.rank
@@ -120,7 +120,7 @@ class BasicPlayer(object):
         # returns 'h', 's' or 'd'
         return HardTotals.table.loc[index, column]
 
-    def search_soft_table(self, hand, dealer):
+    def _search_soft_table(self, hand, dealer):
 
         index = self.hand.value
         column = dealer.up_card.rank
