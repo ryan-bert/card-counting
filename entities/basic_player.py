@@ -49,9 +49,15 @@ class BasicPlayer(object):
             self.hand.value -= 10
             self.hand.aces -= 1
 
-    # Normal round outcome (ie no splits, doubling, etc takes place)
+        # Check if player went bust
+        if self.hand.value > 21:
+            self.bust()
+        # Check if player got a blackjack
+        elif len(self.hand.cards) == 2 and self.hand.value == 21:
+            self.blackjack()
 
-    def normal_round_outcome(self, win=False, draw=False, loss=False):
+    # Normal round outcome (ie no splits, doubling, etc takes place)
+    def round_outcome(self, win=False, draw=False, loss=False):
 
         self.rounds += 1
 
@@ -97,6 +103,24 @@ class BasicPlayer(object):
                 decision = 'h'
 
         return decision
+
+    def double(self):
+        self.total_bets += self.current_bet
+        self.current_bet *= 2
+        self.is_done = True
+        print("Player doubled down!")
+
+    def blackjack(self):
+        self.current_bet *= 1.5
+        self.is_done = True
+        self.round_outcome(win=True)
+        print('Blackjack!!')
+
+    def bust(self):
+        self.is_done = True
+        self.busts += 1
+        self.round_outcome(loss=True)
+        print("Player goes bust!!")
 
     def start_round(self, deck, bet=10):
 
