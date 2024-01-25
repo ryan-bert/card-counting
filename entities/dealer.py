@@ -67,7 +67,6 @@ class Dealer(object):
 
     def stand(self):
         self.is_done = True
-        self.stands += 1
         print('dealer stands.')
 
     def goes_bust(self):

@@ -29,6 +29,8 @@ class BasicPlayer(object):
 
     def hit_me(self, deck):
 
+        print('hit me.')
+
         # If deck is empty, replace and shuffle
         if deck.is_empty():
             number_of_decks = deck.number_of_decks()
@@ -80,12 +82,12 @@ class BasicPlayer(object):
             # get decision from soft totals table
             decision = self._search_soft_table(dealer)
             # Can't double if deck_length != 2
-            if decision == 'd' and deck_length != 2:
+            if decision == 'd' and deck_length > 2:
                 decision = 'h'
         # Hard totals (ie no pairs, no aces)
         else:
             decision = self._search_hard_table(dealer)
-            if decision == 'd' and deck_length != 2:
+            if decision == 'd' and deck_length > 2:
                 decision = 'h'
 
         return decision
@@ -105,10 +107,9 @@ class BasicPlayer(object):
     def goes_bust(self):
         self.is_done = True
         self.busts += 1
-        self.round_outcome(loss=True)
         print("Player goes bust!!")
 
-    def stands(self):
+    def stand(self):
         self.is_done = True
         self.stands += 1
         print('player stands.')
@@ -132,15 +133,18 @@ class BasicPlayer(object):
             self.wins += 1
             # Add bet to total_earnings
             self.total_earnings += self.current_bet
+            print('Win!')
 
         elif loss:
             self.losses += 1
             # Subtract bet from total_earnings
             self.total_earnings -= self.current_bet
+            print('loss!')
 
         elif draw:
             # total_earnings remains the same
             self.draws += 1
+            print('draw!')
 
         # Reset current_bet to 0
         self.current_bet = 0
