@@ -23,6 +23,11 @@ class BasicPlayer(object):
 
     def hit_me(self, deck):
 
+        # If deck is empty, replace and shuffle
+        if deck.is_empty():
+            number_of_decks = deck.number_of_decks()
+            deck = Deck(number_of_decks)
+
         # Remove card from deck and add to dealers hand
         card = deck.cards.pop()
         self.hand.cards.append(card)
