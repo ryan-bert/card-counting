@@ -25,4 +25,4 @@ class PairSplitting(object):
     table = pd.DataFrame(data)
 
     # Set the first column ('soft totals') as the index
-    table.set_index('pairs', inplace=True)
+    table.set_index('pair', inplace=True)

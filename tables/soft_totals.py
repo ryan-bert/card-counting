@@ -26,8 +26,3 @@ class SoftTotals:
 
     # Set the first column ('soft totals') as the index
     table.set_index('soft totals', inplace=True)
-
-
-# # Test
-soft_totals_df = SoftTotals.table
-print(soft_totals_df)
