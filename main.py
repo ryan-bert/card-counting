@@ -17,10 +17,9 @@ def round(player, dealer, deck):
     dealer.start_round(deck)
     player.start_round(deck, bet=100)
 
-    decision = player.get_decision(dealer)
+    # TODO: Player decision loop
 
-    print(player.hand.cards[0], player.hand.cards[1], f'dealer:{dealer.up_card}',
-          f'Decision: {decision}', sep='\n')
+    # TODO: Dealer decision loop
 
 
 if __name__ == '__main__':
