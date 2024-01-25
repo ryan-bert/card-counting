@@ -1,10 +1,8 @@
 from blackjack.hand import Hand
 from blackjack.card import Card
-from players.dealer import Dealer
 from tables.hard_totals import HardTotals
 from tables.soft_totals import SoftTotals
 from tables.pair_splitting import PairSplitting
-import pandas as pd
 
 
 class BasicPlayer(object):

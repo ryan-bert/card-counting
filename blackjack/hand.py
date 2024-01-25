@@ -1,5 +1,3 @@
-from blackjack.card import Card
-
 
 class Hand(object):
 
