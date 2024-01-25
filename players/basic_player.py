@@ -38,23 +38,11 @@ class BasicPlayer(object):
                 self.hand.value -= 10
                 self.hand.aces -= 1
 
-    # def get_decision(self):
+    def get_decision(self):
 
-    #     # Soft hand
-    #     if self.hand.aces > 1:
-    #         if self.hand.value < 18:
-    #             return 'hit'
-    #         else:
-    #             return 'stand'
-    #     # Hard hand
-    #     else:
-    #         if self.hand.value < 17:
-    #             return 'hit'
-    #         else:
-    #             return 'stand'
+        pass
 
     # Normal round outcome (ie no splits, doubling, etc takes place)
-
     def normal_round_outcome(self, win=False, draw=False, loss=False):
 
         self.rounds += 1

@@ -33,6 +33,7 @@ class Deck(object):
                 for rank in ranks:
                     self.cards.append(Card(rank, suit))
 
+        # shuffle cards
         random.shuffle(self.cards)
 
     def is_empty(self):
