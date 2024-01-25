@@ -69,6 +69,11 @@ class BasicPlayer(object):
         # check for pair
         if deck_length == 2 and first_two_match:
             decision = self._search_split_table(dealer)
+            # If decision is not to split, re-route to different table
+            if decision == 'n' and self.hand.aces > 0:      # Pair of aces
+                decision = self._search_soft_table(dealer)
+            elif decision == 'n' and self.hand.aces == 0:   # Pair of non-aces
+                decision = self._search_hard_table(dealer)
 
         # Handle ace(s)
         elif self.hand.aces > 0:
@@ -77,7 +82,7 @@ class BasicPlayer(object):
             # Can't double if deck_length != 2
             if decision == 'd' and deck_length != 2:
                 decision = 'h'
-        # Hard totals (ie  pairs, no aces)
+        # Hard totals (ie no pairs, no aces)
         else:
             decision = self._search_hard_table(dealer)
             if decision == 'd' and deck_length != 2:
