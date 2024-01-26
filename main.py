@@ -1,6 +1,6 @@
 from blackjack.deck import Deck
 from blackjack.hand import Hand
-from entities.basic_player import BasicPlayer
+from entities.basic_strategy_player import BasicPlayer
 from entities.dealer import Dealer
 
 
@@ -8,11 +8,6 @@ def round(player, dealer, deck):
     # Draw 2 cards and place bet
     player.start_round(deck, bet=100)
     dealer.start_round(deck)
-
-    # Ensure no initial split for testing
-    # while player.hand.cards[0] == player.hand.cards[1]:
-    #     player.hand.cards.pop()
-    #     player.hit_me(deck)
 
     # Player decision loop
     while not player.is_done:
