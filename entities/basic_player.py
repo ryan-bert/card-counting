@@ -4,7 +4,6 @@ from blackjack.deck import Deck
 from tables.hard_totals import HardTotals
 from tables.soft_totals import SoftTotals
 from tables.pair_splitting import PairSplitting
-from utils.suppress_print import SuppressPrint
 
 
 # TODO: MAKE SPLIT FUNCTION
@@ -29,8 +28,6 @@ class BasicPlayer(object):
         self.stands = 0
 
     def hit_me(self, deck):
-
-        print('hit me.')
 
         # If deck is empty, replace and shuffle
         if deck.is_empty():
@@ -122,9 +119,8 @@ class BasicPlayer(object):
         self.total_bets += bet
 
         # Pop 2 cards from deck into Player's hand
-        with SuppressPrint:
-            self.hit_me(deck)
-            self.hit_me(deck)
+        self.hit_me(deck)
+        self.hit_me(deck)
 
         print('Player:', self.hand)
 

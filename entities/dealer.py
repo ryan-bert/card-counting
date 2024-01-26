@@ -1,7 +1,6 @@
 from blackjack.hand import Hand
 from blackjack.card import Card
 from blackjack.deck import Deck
-from utils.suppress_print import SuppressPrint
 
 
 class Dealer(object):
@@ -60,9 +59,9 @@ class Dealer(object):
     def start_round(self, deck):
 
         # Pop 2 cards from deck into Dealer's hand
-        with SuppressPrint:
-            self.hit_me(deck)
-            self.hit_me(deck)
+        # with SuppressPrint:
+        self.hit_me(deck)
+        self.hit_me(deck)
 
         # Set up_card field (if applicable)
         self.up_card = self.hand.cards[1]
@@ -71,7 +70,6 @@ class Dealer(object):
 
     def stand(self):
         self.is_done = True
-        print('dealer stands.')
 
     def goes_bust(self):
         self.is_done = True
