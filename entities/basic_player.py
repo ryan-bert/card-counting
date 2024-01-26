@@ -31,7 +31,7 @@ class BasicPlayer(object):
 
         # If deck is empty, replace and shuffle
         if deck.is_empty():
-            number_of_decks = deck.number_of_decks()
+            number_of_decks = deck.number_of_decks
             deck = Deck(number_of_decks)
 
         # Remove card from deck and add to dealers hand
@@ -53,11 +53,11 @@ class BasicPlayer(object):
 
         # Check if player went bust
         if self.hand.value > 21:
-            self.goes_bust()
+            self.is_done = True
 
         # Check if player got a blackjack
         elif len(self.hand.cards) == 2 and self.hand.value == 21:
-            self.gets_blackjack()
+            self.is_done = True
 
     def get_decision(self, dealer):
 
@@ -103,14 +103,13 @@ class BasicPlayer(object):
         print('Blackjack!!')
 
     def goes_bust(self):
-        self.is_done = True
         self.busts += 1
+        self.round_outcome(loss=True)
         print("Player goes bust!!")
 
     def stand(self):
         self.is_done = True
         self.stands += 1
-        print('player stands.')
 
     def start_round(self, deck, bet=10):
 
@@ -122,6 +121,7 @@ class BasicPlayer(object):
         self.hit_me(deck)
         self.hit_me(deck)
 
+        print(f'bet: {bet}')
         print('Player:', self.hand)
 
     # Normal round outcome (ie no splits, doubling, etc takes place)
@@ -148,6 +148,9 @@ class BasicPlayer(object):
 
         # Reset current_bet to 0
         self.current_bet = 0
+
+        # Reset is_done to False
+        self.is_done = False
 
     def _search_split_table(self, dealer):
 

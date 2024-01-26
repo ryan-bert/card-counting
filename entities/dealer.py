@@ -14,7 +14,7 @@ class Dealer(object):
 
         # If deck is empty, replace and shuffle deck
         if deck.is_empty():
-            number_of_decks = deck.number_of_decks()
+            number_of_decks = deck.number_of_decks
             deck = Deck(number_of_decks)
 
         # Remove card from deck and add to dealers hand
@@ -40,7 +40,7 @@ class Dealer(object):
 
         # Check if dealer has gone bust:
         if self.hand.value > 21:
-            self.goes_bust()
+            self.is_done = True
 
     def get_decision(self):
         # Soft hand
@@ -72,5 +72,4 @@ class Dealer(object):
         self.is_done = True
 
     def goes_bust(self):
-        self.is_done = True
         print('dealer goes bust!!')

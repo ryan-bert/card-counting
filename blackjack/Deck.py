@@ -20,6 +20,9 @@ class Deck(object):
                 for rank in ranks:
                     self.cards.append(Card(rank, suit))
 
+        # Keep track of no. of decks
+        self.number_of_decks = number_of_decks
+
         # shuffle cards
         random.shuffle(self.cards)
 
