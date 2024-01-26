@@ -17,14 +17,14 @@ def round(player, dealer, deck):
     # Player decision loop
     while not player.is_done:
         decision = player.get_decision(dealer)
-        if decision == 'd':
-            print(f'decision: {decision}---------------------------')
-        elif decision == 'h':
+        if decision == 'h':
             player.hit_me(deck)
         elif decision == 's':
             player.stand()
         elif decision == 'd':
             player.doubles()
+        elif decision == 'y':       # Split case
+            pass
 
     # Dealer decision loop
     if player.hand.value < 21:
@@ -48,22 +48,17 @@ def round(player, dealer, deck):
     else:
         player.round_outcome(draw=True)
 
-    print(player.hand)
-    print(dealer.hand)
+    print('Player:', player.hand)
+    print('Dealer:', dealer.hand)
+    print('----------------------------------')
     # Clear hands:
     dealer.hand = Hand()
     player.hand = Hand()
 
 
 if __name__ == '__main__':
-    deck = Deck(80)
+    deck = Deck(8)
     player = BasicPlayer()
     dealer = Dealer()
-    for i in range(100000):
+    for i in range(50):
         round(player, dealer, deck)
-        # for i in player.hand.cards:
-        #     print(i, sep='\t')
-        # print('--------------------------------')
-        # for i in dealer.hand.cards:
-        #     print(i, sep='\t')
-        # print('ratio: ', player.total_earnings/player.total_bets)

@@ -126,6 +126,8 @@ class BasicPlayer(object):
             self.hit_me(deck)
             self.hit_me(deck)
 
+        print('Player:', self.hand)
+
     # Normal round outcome (ie no splits, doubling, etc takes place)
     def round_outcome(self, win=False, draw=False, loss=False):
 
