@@ -11,7 +11,10 @@ from tables.pair_splitting import PairSplitting
 class BasicPlayer(object):
 
     def __init__(self):
-        self.hand = Hand()
+        # List of hands and an index to handle splitting
+        self.index = 0
+        self.hands = [Hand()]
+        self.hand = self.hands[self.index]
         # Variable True if player stands or goes bust
         self.is_done = False
         # Financial`metrics`
@@ -28,6 +31,8 @@ class BasicPlayer(object):
         self.stands = 0
 
     def hit_me(self, deck):
+
+        # self.hand = self.hands[self.index]
 
         # If deck is empty, replace and shuffle
         if deck.is_empty():
@@ -61,6 +66,8 @@ class BasicPlayer(object):
 
     def get_decision(self, dealer):
 
+        # self.hand = self.hands[self.index]
+
         # create function variables
         decision = None
         deck_length = len(self.hand.cards)
@@ -70,9 +77,11 @@ class BasicPlayer(object):
         if deck_length == 2 and first_two_match:
             decision = self._search_split_table(dealer)
             # If decision is not to split, re-route to different table
-            if decision == 'n' and self.hand.aces > 0:      # Pair of aces
+            # Pair of aces
+            if decision == 'n' and self.hand.aces > 0:
                 decision = self._search_soft_table(dealer)
-            elif decision == 'n' and self.hand.aces == 0:   # Pair of non-aces
+            # Pair of non-aces
+            elif decision == 'n' and self.hand.aces == 0:
                 decision = self._search_hard_table(dealer)
 
         # Handle ace(s)
@@ -89,6 +98,22 @@ class BasicPlayer(object):
                 decision = 'h'
 
         return decision
+
+    def split(self, deck):
+
+        print('player split!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
+        # self.hand = self.hands[self.index]
+
+        new_hand = Hand()
+        self.hands.append(new_hand)
+        self.hands[1].cards.append(self.hands[0].cards.pop())
+
+        self.hit_me(deck)
+        self.index += 1
+
+        self.total_bets += self.current_bet
+        self.current_bet *= 2
 
     def doubles(self):
         self.total_bets += self.current_bet
@@ -127,9 +152,15 @@ class BasicPlayer(object):
     # Normal round outcome (ie no splits, doubling, etc takes place)
     def round_outcome(self, win=False, draw=False, loss=False):
 
+        # self.hand = self.hands[self.index]
+
         self.rounds += 1
 
-        if win:
+        if win and len(self.hands) > 1:
+            self.wins += 1
+            # Add 1/2 bet to total_earnings (because current bet was doubled)
+            self.total_earnings += self.current_bet
+        elif win:
             self.wins += 1
             # Add bet to total_earnings
             self.total_earnings += self.current_bet
@@ -146,13 +177,14 @@ class BasicPlayer(object):
             self.draws += 1
             print('draw!')
 
-        # Reset current_bet to 0
-        self.current_bet = 0
-
-        # Reset is_done to False
-        self.is_done = False
+        # Reset current_bet and is_done
+        if self.index == len(self.hands) - 1:
+            self.current_bet = 0
+            self.is_done = False
 
     def _search_split_table(self, dealer):
+
+        # self.hand = self.hands[self.index]
 
         index = self.hand.cards[0].rank
         column = dealer.up_card.rank
@@ -162,6 +194,8 @@ class BasicPlayer(object):
 
     def _search_hard_table(self, dealer):
 
+        # self.hand = self.hands[self.index]
+
         index = self.hand.value
         column = dealer.up_card.rank
 
@@ -169,6 +203,8 @@ class BasicPlayer(object):
         return HardTotals.table.loc[index, column]
 
     def _search_soft_table(self, dealer):
+
+        # self.hand = self.hands[self.index]
 
         index = self.hand.value
         column = dealer.up_card.rank

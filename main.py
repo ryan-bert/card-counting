@@ -4,10 +4,27 @@ from entities.basic_strategy_player import BasicPlayer
 from entities.dealer import Dealer
 
 
-def round(player, dealer, deck):
+def main():
+
+    # initialize game objects
+    player = BasicPlayer()
+    dealer = Dealer()
+    deck = Deck(4)
+
     # Draw 2 cards and place bet
     player.start_round(deck, bet=100)
     dealer.start_round(deck)
+
+    decision = player.get_decision(dealer)
+    if decision == 's':
+        player.split(deck)
+
+    for index in range(len(player.hands)):
+        player.index = index
+        round(player, dealer, deck)
+
+
+def round(player, dealer, deck):
 
     # Player decision loop
     while not player.is_done:
@@ -65,13 +82,5 @@ def round(player, dealer, deck):
 
 
 if __name__ == '__main__':
-    deck = Deck(4)
-    player = BasicPlayer()
-    dealer = Dealer()
-    for i in range(1000):
-        round(player, dealer, deck)
-    print('----------------------------------')
-    print(f'total earnings {player.total_earnings}',
-          f'total bets {player.total_bets}',  f'ratio: {player.total_earnings/player.total_bets}')
-    print(f'win rate: {player.wins/player.rounds}')
-    print('----------------------------------')
+    for i in range(10):
+        main()
