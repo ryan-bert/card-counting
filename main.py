@@ -6,17 +6,18 @@ from entities.dealer import Dealer
 
 def round(player, dealer, deck):
     # Draw 2 cards and place bet
-    dealer.start_round(deck)
     player.start_round(deck, bet=100)
+    dealer.start_round(deck)
 
     # Ensure no initial split for testing
-    while player.hand.cards[0] == player.hand.cards[1]:
-        player.hand.cards.pop()
-        player.hit_me(deck)
+    # while player.hand.cards[0] == player.hand.cards[1]:
+    #     player.hand.cards.pop()
+    #     player.hit_me(deck)
 
     # Player decision loop
     while not player.is_done:
         decision = player.get_decision(dealer)
+        print(f'decision: {decision}')
         if decision == 'h':
             player.hit_me(deck)
         elif decision == 's':
@@ -24,7 +25,7 @@ def round(player, dealer, deck):
         elif decision == 'd':
             player.doubles()
         elif decision == 'y':       # Split case
-            pass
+            player.hit_me(deck)
 
     # Dealer decision loop
     if player.hand.value < 21:
@@ -35,12 +36,18 @@ def round(player, dealer, deck):
             elif decision == 'stand':
                 dealer.stand()
 
-    # Check for busts and compare hand values
+    # Check for busts
     if player.hand.value > 21:
-        player.round_outcome(loss=True)
+        player.goes_bust()
     elif dealer.hand.value > 21:
+        dealer.goes_bust()
         player.round_outcome(win=True)
 
+    # Check for blackjack
+    elif player.hand.value == 21 and len(player.hand.cards) == 2:
+        player.gets_blackjack()
+
+    # Compare raw hand values
     elif player.hand.value > dealer.hand.value:
         player.round_outcome(win=True)
     elif player.hand.value < dealer.hand.value:
@@ -50,15 +57,23 @@ def round(player, dealer, deck):
 
     print('Player:', player.hand)
     print('Dealer:', dealer.hand)
+    print(f'total earnings {player.total_earnings}')
+    print('total bets:', player.total_bets)
     print('----------------------------------')
+
     # Clear hands:
     dealer.hand = Hand()
     player.hand = Hand()
 
 
 if __name__ == '__main__':
-    deck = Deck(8)
+    deck = Deck(4)
     player = BasicPlayer()
     dealer = Dealer()
-    for i in range(50):
+    for i in range(10):
         round(player, dealer, deck)
+    print('----------------------------------')
+    print(f'total earnings {player.total_earnings}',
+          f'total bets {player.total_bets}',  f'ratio: {player.total_earnings/player.total_bets}')
+    print(f'win rate: {player.wins/player.rounds}')
+    print('----------------------------------')
