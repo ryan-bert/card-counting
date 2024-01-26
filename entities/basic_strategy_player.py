@@ -59,24 +59,15 @@ class BasicPlayer(object):
         elif len(self.hand.cards) == 2 and self.hand.value == 21:
             self.is_done = True
 
-    def get_decision(self, dealer):
+    def get_other_decision(self, dealer):
 
-        # create function variables
-        decision = None
+        # Default
+        decision = 's'
+        # Util
         deck_length = len(self.hand.cards)
-        first_two_match = self.hand.cards[0] == self.hand.cards[1]
-
-        # check for pair
-        if deck_length == 2 and first_two_match:
-            decision = self._search_split_table(dealer)
-            # If decision is not to split, re-route to different table
-            if decision == 'n' and self.hand.aces > 0:      # Pair of aces
-                decision = self._search_soft_table(dealer)
-            elif decision == 'n' and self.hand.aces == 0:   # Pair of non-aces
-                decision = self._search_hard_table(dealer)
 
         # Handle ace(s)
-        elif self.hand.aces > 0:
+        if self.hand.aces > 0:
             # get decision from soft totals table
             decision = self._search_soft_table(dealer)
             # Can't double if deck_length != 2
@@ -90,7 +81,21 @@ class BasicPlayer(object):
 
         return decision
 
+    def get_split_decision(self, dealer):
+
+        # Initialize variables
+        decision = 'n'
+        deck_length = len(self.hand.cards)
+        first_two_match = self.hand.cards[0] == self.hand.cards[1]
+
+        # check for pair
+        if deck_length == 2 and first_two_match:
+            decision = self._search_split_table(dealer)
+
+        return decision
+
     def doubles(self):
+
         self.total_bets += self.current_bet
         self.current_bet *= 2
         self.is_done = True
@@ -151,6 +156,18 @@ class BasicPlayer(object):
 
         # Reset is_done to False
         self.is_done = False
+
+    def add_totals(self, other):
+
+        if other is not None:
+            self.total_bets += other.total_bets
+            self.total_earnings += other.total_earnings
+            self.rounds += other.rounds
+            self.wins += other.wins
+            self.draws += other.draws
+            self.losses += other.losses
+            self.busts += other.busts
+            self.stands += other.stands
 
     def _search_split_table(self, dealer):
 
