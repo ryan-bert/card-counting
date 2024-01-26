@@ -65,12 +65,15 @@ def round(player, dealer, deck):
     dealer.hand = Hand()
     player.hand = Hand()
 
+    # Reset dealer.is_done()
+    dealer.is_done = False
+
 
 if __name__ == '__main__':
     deck = Deck(4)
     player = BasicPlayer()
     dealer = Dealer()
-    for i in range(10):
+    for i in range(1000):
         round(player, dealer, deck)
     print('----------------------------------')
     print(f'total earnings {player.total_earnings}',
