@@ -4,6 +4,7 @@ from blackjack.deck import Deck
 from tables.hard_totals import HardTotals
 from tables.soft_totals import SoftTotals
 from tables.pair_splitting import PairSplitting
+from utils.suppress_print import SuppressPrint
 
 
 # TODO: MAKE SPLIT FUNCTION
@@ -121,8 +122,9 @@ class BasicPlayer(object):
         self.total_bets += bet
 
         # Pop 2 cards from deck into Player's hand
-        self.hit_me(deck)
-        self.hit_me(deck)
+        with SuppressPrint:
+            self.hit_me(deck)
+            self.hit_me(deck)
 
     # Normal round outcome (ie no splits, doubling, etc takes place)
     def round_outcome(self, win=False, draw=False, loss=False):
