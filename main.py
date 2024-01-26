@@ -16,6 +16,7 @@ def main():
     dealer.start_round(deck)
 
     decision = player.get_decision(dealer)
+    print(f'Initial decision: {decision}')
     if decision == 's':
         player.split(deck)
 

@@ -66,7 +66,7 @@ class BasicPlayer(object):
 
     def get_decision(self, dealer):
 
-        # self.hand = self.hands[self.index]
+        self.hand = self.hands[self.index]
 
         # create function variables
         decision = None
@@ -137,6 +137,8 @@ class BasicPlayer(object):
         self.stands += 1
 
     def start_round(self, deck, bet=10):
+
+        self.hand = self.hands[self.index]
 
         # Update bet variables
         self.current_bet = bet
