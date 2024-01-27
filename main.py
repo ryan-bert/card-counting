@@ -24,13 +24,6 @@ def init_round(player, dealer, deck):
         card = player.hand.cards.pop()
         dummy.hand.cards.append(card)
 
-        if card.rank == 'ace':
-            print('ACE SPLIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
-            player.hand.value = 11
-            dummy.hand.value = 11
-            player.hand.aces = 1
-            dummy.hand.aces = 1
-
         if card.rank != 'ace':
             player.hand.value -= card.value
             dummy.hand.value += card.value
@@ -49,16 +42,15 @@ def init_round(player, dealer, deck):
 def round(player, dealer, deck, dummy):
 
     if dummy is not None and player.hand.cards[0].rank == 'ace':
+        print(f'Bet: {player.current_bet}')
         player.hand.value = 11
         player.hand.aces = 1
         player.hit_me(deck)
 
-    print(f'{player.name} hand value5: {player.hand.value}')
-
     # Player decision loop (split NOT included)
     while not player.is_done:
         decision = player.get_other_decision(dealer)
-        print(f'decision: {decision}')
+        print(f'{player.name} decision: {decision}')
         if decision == 'h':
             player.hit_me(deck)
         elif decision == 's':
@@ -66,14 +58,19 @@ def round(player, dealer, deck, dummy):
         elif decision == 'd':
             player.hit_me(deck)
             player.doubles()
+        print(f'{player.name} -> {player.hand}')
+
     # Dealer decision loop
     if player.hand.value < 21:
         while not dealer.is_done:
             decision = dealer.get_decision()
-            if decision == 'hit':
+            print(f'Dealer decision: {decision}')
+            if decision == 'h':
                 dealer.hit_me(deck)
-            elif decision == 'stand':
+            elif decision == 's':
                 dealer.stand()
+            print(f'Dealer -> {dealer.hand}')
+
     # Check for busts
     if player.hand.value > 21:
         player.goes_bust()
@@ -85,11 +82,14 @@ def round(player, dealer, deck, dummy):
     elif player.hand.value == 21 and len(player.hand.cards) == 2:
         player.gets_blackjack()
 
-    # Compare raw hand values
     elif player.hand.value > dealer.hand.value:
+        print('Comparing...')
         player.round_outcome(win=True)
+        print('Comparing...')
     elif player.hand.value < dealer.hand.value:
+        print('Comparing...')
         player.round_outcome(loss=True)
+        print('Comparing...')
     else:
         player.round_outcome(draw=True)
 
@@ -110,12 +110,12 @@ def round(player, dealer, deck, dummy):
 
 if __name__ == '__main__':
     # Initialize game objects for the entire game session
-    deck = Deck(6)
+    deck = Deck(8)
     player = BasicPlayer("Player")
     dealer = Dealer()
 
     # Number of rounds to play
-    num_rounds = 1000  # Change this to play more or fewer rounds
+    num_rounds = 5000  # Change this to play more or fewer rounds
 
     # Play multiple rounds
     for i in range(num_rounds):

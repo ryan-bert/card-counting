@@ -31,8 +31,3 @@ class HardTotals:
 
     # Set the first column ('hard totals') as the index
     table.set_index('hard totals', inplace=True)
-
-
-# # Test
-# hard_totals_df = HardTotals.table
-# print(hard_totals_df)

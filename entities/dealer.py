@@ -46,15 +46,15 @@ class Dealer(object):
         # Soft hand
         if self.hand.aces > 1:
             if self.hand.value < 18:
-                return 'hit'
+                return 'h'
             else:
-                return 'stand'
+                return 's'
         # Hard hand
         else:
             if self.hand.value < 17:
-                return 'hit'
+                return 'h'
             else:
-                return 'stand'
+                return 's'
 
     def start_round(self, deck):
 

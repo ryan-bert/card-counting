@@ -50,7 +50,6 @@ class BasicPlayer(object):
 
         # Change ace from 11 to 1 if dealer goes bust with an ace
         while self.hand.aces > 0 and self.hand.value > 21:
-            print(self.hand)
             self.hand.value -= 10
             self.hand.aces -= 1
 
@@ -108,13 +107,13 @@ class BasicPlayer(object):
     def gets_blackjack(self):
         self.current_bet *= 1.5
         self.is_done = True
-        self.round_outcome(win=True)
         print('Blackjack!!')
+        self.round_outcome(win=True)
 
     def goes_bust(self):
         self.busts += 1
+        print("Player goes bust!")
         self.round_outcome(loss=True)
-        print("Player goes bust!!")
 
     def stand(self):
         self.is_done = True
@@ -207,9 +206,6 @@ class BasicPlayer(object):
 
         index = self.hand.value
         column = dealer.up_card.rank
-
-        if index not in SoftTotals.table.index:
-            print(f"Invalid hand value {self.name}: {index}")
 
         # returns 'h', 's' or 'd'
         return SoftTotals.table.loc[index, column]
