@@ -34,34 +34,5 @@ class Deck(object):
     def is_empty(self):
         return len(self.cards) == 0
 
-    def update_count(self):
-        # Reset the count
-        self.running_count = 0
-
-        # Find played cards using list comprehension
-        played_cards = [
-            card for card in self.original_order if card not in self.cards]
-
-        played_cards_str = ", ".join(str(card) for card in played_cards)
-        print("Played Cards:", played_cards_str)
-
-        # Update count based on played cards
-        for card in played_cards:
-            self.running_count += card.count_value
-
-        return self.running_count
-
-    def get_true_count(self):
-        # Calculate approximate no. of decks remaining
-        cards_remaining = len(self.cards)
-        decks_remaining = cards_remaining / 52  # There are 52 cards in a deck
-
-        print(f'Running count: {self.running_count}')
-
-        if decks_remaining > 0:
-            # Calculate true count
-            true_count = self.running_count / decks_remaining
-        else:
-            true_count = self.running_count
-
-        return true_count
+    def get_remaining_length(self):
+        return (len(self.cards)/52.0)

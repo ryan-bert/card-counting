@@ -214,9 +214,11 @@ class BasicPlayer(object):
         # returns 'h', 's' or 'd'
         return SoftTotals.table.loc[index, column]
 
-    def calculate_bet(self, zen_count, min_bet, dealer):
+    def calculate_bet(self, zen_count, min_bet, deck):
         # Calculate the True Count
-        decks_remaining = len(dealer.cards) / 52.0
+        decks_remaining = deck.get_remaining_length()
+        print(f'decks_remaining: {decks_remaining}')
+        print(len(deck.cards))
         if decks_remaining > 0:
             true_count = float(zen_count) / decks_remaining
         else:
@@ -226,8 +228,10 @@ class BasicPlayer(object):
             print(f'True count: {true_count}')
         bet = min_bet * true_count
 
-        # Ensure bet does not exceed maximum limits
-        bet = min(bet, bet*5)
-        bet = max(bet, 0)
+        # Ensure bet > 0
+        if true_count > 1:
+            bet = min(bet, 0)
+        else:
+            bet = 0
 
         return bet
