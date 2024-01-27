@@ -10,8 +10,10 @@ from tables.pair_splitting import PairSplitting
 
 class BasicPlayer(object):
 
-    def __init__(self):
+    def __init__(self, name):
         self.hand = Hand()
+        # Name for when split occurs
+        self.name = name
         # Variable True if player stands or goes bust
         self.is_done = False
         # Financial`metrics`
@@ -48,11 +50,13 @@ class BasicPlayer(object):
 
         # Change ace from 11 to 1 if dealer goes bust with an ace
         while self.hand.aces > 0 and self.hand.value > 21:
+            print(self.hand)
             self.hand.value -= 10
             self.hand.aces -= 1
 
         # Check if player went bust
         if self.hand.value > 21:
+
             self.is_done = True
 
         # Check if player got a blackjack
@@ -127,7 +131,7 @@ class BasicPlayer(object):
         self.hit_me(deck)
 
         print(f'bet: {bet}')
-        print('Player:', self.hand)
+        print(f'{self.name}:', self.hand)
 
     # Normal round outcome (ie no splits, doubling, etc takes place)
     def round_outcome(self, win=False, draw=False, loss=False):
@@ -156,6 +160,20 @@ class BasicPlayer(object):
 
         # Reset is_done to False
         self.is_done = False
+
+    def split(self):
+        # Create a new player for the split hand
+        split_player = BasicPlayer("Dummy")
+
+        # Transfer or copy the necessary attributes
+        split_player.current_bet = self.current_bet
+        split_player.total_bets = self.current_bet
+        split_player.total_earnings = 0
+
+        # Other necessary initializations
+        # ...
+
+        return split_player
 
     def add_totals(self, other):
 
@@ -189,6 +207,9 @@ class BasicPlayer(object):
 
         index = self.hand.value
         column = dealer.up_card.rank
+
+        if index not in SoftTotals.table.index:
+            print(f"Invalid hand value {self.name}: {index}")
 
         # returns 'h', 's' or 'd'
         return SoftTotals.table.loc[index, column]

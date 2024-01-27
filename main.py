@@ -17,51 +17,47 @@ def init_round(player, dealer, deck):
     # Check for split
     decision = player.get_split_decision(dealer)
     if decision == 'y':
-        # Player & dummy must have 2 cards
-        print('Split!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        print(f'checkpoint1: {player.hand.value}')
 
-        dummy = BasicPlayer()
-        print(f'currentbet1: {player.current_bet}')
-        print(f'totalbet1: {player.total_bets}')
+        dummy = player.split()
 
         # Do a manual hit_me()
         card = player.hand.cards.pop()
-        player.hand.value -= card.value
         dummy.hand.cards.append(card)
-        dummy.hand.value += card.value
 
-        # since start_round is never used
-        dummy.current_bet = player.current_bet
-        dummy.total_bets += player.current_bet
+        if card.rank == 'ace':
+            print('ACE SPLIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
+            player.hand.value = 11
+            dummy.hand.value = 11
+            player.hand.aces = 1
+            dummy.hand.aces = 1
 
-        dummy.hit_me(deck)
-        print(f'currentbet2: {player.current_bet}')
-        print(f'totalbet2: {player.total_bets}')
-        player.hit_me(deck)
-        print(f'currentbet3: {player.current_bet}')
-        print(f'totalbet3: {player.total_bets}')
+        if card.rank != 'ace':
+            player.hand.value -= card.value
+            dummy.hand.value += card.value
+            player.hit_me(deck)
+            dummy.hit_me(deck)
+
         # Duplicate
         # copied_deck = deepcopy(deck)
-        round(dummy, dealer, deck)
+        round(dummy, dealer, deck, dummy)
+
+        player.add_totals(dummy)
     # no split
-    round(player, dealer, deck)
-    # print(f'total bets: {player.total_bets}')
-    player.add_totals(dummy)
-    # print(f'total bets: {player.total_bets}')
+    round(player, dealer, deck, dummy)
 
 
-def round(player, dealer, deck):
-    print(f'currentbetvv: {player.current_bet}')
-    print(f'totalbetvv: {player.total_bets}')
+def round(player, dealer, deck, dummy):
+
+    if dummy is not None and player.hand.cards[0].rank == 'ace':
+        player.hand.value = 11
+        player.hand.aces = 1
+        player.hit_me(deck)
+
+    print(f'{player.name} hand value5: {player.hand.value}')
 
     # Player decision loop (split NOT included)
     while not player.is_done:
-        print(f'currentbetww: {player.current_bet}')
-        print(f'totalbetww: {player.total_bets}')
         decision = player.get_other_decision(dealer)
-        print(f'currentbetxx: {player.current_bet}')
-        print(f'totalbetxx: {player.total_bets}')
         print(f'decision: {decision}')
         if decision == 'h':
             player.hit_me(deck)
@@ -70,8 +66,6 @@ def round(player, dealer, deck):
         elif decision == 'd':
             player.hit_me(deck)
             player.doubles()
-    print(f'currentbet4: {player.current_bet}')
-    print(f'totalbet4: {player.total_bets}')
     # Dealer decision loop
     if player.hand.value < 21:
         while not dealer.is_done:
@@ -80,8 +74,6 @@ def round(player, dealer, deck):
                 dealer.hit_me(deck)
             elif decision == 'stand':
                 dealer.stand()
-        print(f'currentbet1: {player.current_bet}')
-        print(f'totalbet1: {player.total_bets}')
     # Check for busts
     if player.hand.value > 21:
         player.goes_bust()
@@ -102,7 +94,7 @@ def round(player, dealer, deck):
         player.round_outcome(draw=True)
 
     # Print end-of-round info
-    print('Player:', player.hand)
+    print(f'{player.name}:', player.hand)
     print('Dealer:', dealer.hand)
     print(f'total earnings {player.total_earnings}')
     print('total bets:', player.total_bets)
@@ -118,12 +110,12 @@ def round(player, dealer, deck):
 
 if __name__ == '__main__':
     # Initialize game objects for the entire game session
-    deck = Deck(4)
-    player = BasicPlayer()
+    deck = Deck(6)
+    player = BasicPlayer("Player")
     dealer = Dealer()
 
     # Number of rounds to play
-    num_rounds = 100  # Change this to play more or fewer rounds
+    num_rounds = 1000  # Change this to play more or fewer rounds
 
     # Play multiple rounds
     for i in range(num_rounds):
