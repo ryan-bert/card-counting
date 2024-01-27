@@ -6,8 +6,6 @@ from tables.soft_totals import SoftTotals
 from tables.pair_splitting import PairSplitting
 
 
-# TODO: MAKE SPLIT FUNCTION
-
 class BasicPlayer(object):
 
     def __init__(self, name):
@@ -105,6 +103,7 @@ class BasicPlayer(object):
         print("Player doubled down!")
 
     def gets_blackjack(self):
+
         self.current_bet *= 1.5
         self.is_done = True
         print('Blackjack!!')
@@ -120,11 +119,9 @@ class BasicPlayer(object):
         self.stands += 1
 
     def start_round(self, deck, bet=10):
-
         # Update bet variables
         self.current_bet = bet
         self.total_bets += bet
-
         # Pop 2 cards from deck into Player's hand
         self.hit_me(deck)
         self.hit_me(deck)
@@ -142,13 +139,11 @@ class BasicPlayer(object):
             # Add bet to total_earnings
             self.total_earnings += self.current_bet
             print('Win!')
-
         elif loss:
             self.losses += 1
             # Subtract bet from total_earnings
             self.total_earnings -= self.current_bet
             print('loss!')
-
         elif draw:
             # total_earnings remains the same
             self.draws += 1
@@ -156,7 +151,6 @@ class BasicPlayer(object):
 
         # Reset current_bet to 0
         self.current_bet = 0
-
         # Reset is_done to False
         self.is_done = False
 
@@ -168,9 +162,6 @@ class BasicPlayer(object):
         split_player.current_bet = self.current_bet
         split_player.total_bets = self.current_bet
         split_player.total_earnings = 0
-
-        # Other necessary initializations
-        # ...
 
         return split_player
 
@@ -187,7 +178,7 @@ class BasicPlayer(object):
             self.stands += other.stands
 
     def _search_split_table(self, dealer):
-
+        # Parameters for DataFrame.loc()
         index = self.hand.cards[0].rank
         column = dealer.up_card.rank
 
@@ -195,7 +186,7 @@ class BasicPlayer(object):
         return PairSplitting.table.loc[index, column]
 
     def _search_hard_table(self, dealer):
-
+        # Parameters for DataFrame.loc()
         index = self.hand.value
         column = dealer.up_card.rank
 
@@ -203,7 +194,7 @@ class BasicPlayer(object):
         return HardTotals.table.loc[index, column]
 
     def _search_soft_table(self, dealer):
-
+        # Parameters for DataFrame.loc()
         index = self.hand.value
         column = dealer.up_card.rank
 
