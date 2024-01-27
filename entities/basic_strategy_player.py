@@ -8,7 +8,7 @@ from tables.pair_splitting import PairSplitting
 
 class BasicPlayer(object):
 
-    def __init__(self, name):
+    def __init__(self, name, card_counting=False):
         self.hand = Hand()
         # Name for when split occurs
         self.name = name
@@ -26,6 +26,12 @@ class BasicPlayer(object):
         # Busts vs stands (stands include doubling-down)
         self.busts = 0
         self.stands = 0
+        # Initialise card counting variables
+        if card_counting:
+            self.count = 0
+            self.card_counting = True
+        else:
+            self.card_counting = False
 
     def hit_me(self, deck):
 
@@ -33,10 +39,17 @@ class BasicPlayer(object):
         if deck.is_empty():
             number_of_decks = deck.number_of_decks
             deck = Deck(number_of_decks)
+            # Reset count
+            if self.card_counting:
+                self.count = 0
 
         # Remove card from deck and add to dealers hand
         card = deck.cards.pop()
         self.hand.cards.append(card)
+
+        # Add to count
+        if self.card_counting:
+            self.count += card.count_value
 
         # Update hand value
         self.hand.value += card.value
@@ -200,3 +213,21 @@ class BasicPlayer(object):
 
         # returns 'h', 's' or 'd'
         return SoftTotals.table.loc[index, column]
+
+    def calculate_bet(self, zen_count, min_bet, dealer):
+        # Calculate the True Count
+        decks_remaining = len(dealer.cards) / 52.0
+        if decks_remaining > 0:
+            true_count = float(zen_count) / decks_remaining
+        else:
+            true_count = float(zen_count)
+
+        # Calculate the bet based on the multiplier
+            print(f'True count: {true_count}')
+        bet = min_bet * true_count
+
+        # Ensure bet does not exceed maximum limits
+        bet = min(bet, bet*5)
+        bet = max(bet, 0)
+
+        return bet

@@ -10,16 +10,24 @@ class Dealer(object):
         self.is_done = False
 
     # Dealer stands on hard 17, hits on soft 17 (ie H17 game)
-    def hit_me(self, deck):
+    def hit_me(self, deck, player):
 
         # If deck is empty, replace and shuffle deck
         if deck.is_empty():
             number_of_decks = deck.number_of_decks
             deck = Deck(number_of_decks)
+            # Reset count
+            if player.card_counting:
+                self.count = 0
 
         # Remove card from deck and add to dealers hand
         card = deck.cards.pop()
         self.hand.cards.append(card)
+
+        # Add to count
+        # Add to count
+        if player.card_counting:
+            player.count += card.count_value
 
         # Update hand value
         self.hand.value += card.value
@@ -56,12 +64,12 @@ class Dealer(object):
             else:
                 return 's'
 
-    def start_round(self, deck):
+    def start_round(self, deck, player):
 
         # Pop 2 cards from deck into Dealer's hand
         # with SuppressPrint:
-        self.hit_me(deck)
-        self.hit_me(deck)
+        self.hit_me(deck, player)
+        self.hit_me(deck, player)
 
         # Set up_card field (if applicable)
         self.up_card = self.hand.cards[1]

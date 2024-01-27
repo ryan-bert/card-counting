@@ -3,6 +3,11 @@ from blackjack.hand import Hand
 from entities.basic_strategy_player import BasicPlayer
 from entities.dealer import Dealer
 from copy import deepcopy
+import random
+
+# handle count in:
+# hit_me (dealer)
+# hit_me ()
 
 
 def init_round(player, dealer, deck):
@@ -10,9 +15,16 @@ def init_round(player, dealer, deck):
     # Create dummy-player variable (for splitting)
     dummy = None
 
+    bet = 1000
+
+    if player.card_counting:
+        adjusted_bet = player.calculate_bet(player.count, bet, deck)
+        player.start_round(deck, adjusted_bet)
+    else:
+        player.start_round(deck, bet)
+
     # Draw 2 cards and place bet
-    player.start_round(deck, bet=100)
-    dealer.start_round(deck)
+    dealer.start_round(deck, player)
 
     # Check for split
     decision = player.get_split_decision(dealer)
@@ -66,7 +78,7 @@ def round(player, dealer, deck, dummy):
             decision = dealer.get_decision()
             print(f'Dealer decision: {decision}')
             if decision == 'h':
-                dealer.hit_me(deck)
+                dealer.hit_me(deck, player)
             elif decision == 's':
                 dealer.stand()
             print(f'Dealer -> {dealer.hand}')
@@ -111,25 +123,18 @@ def round(player, dealer, deck, dummy):
 if __name__ == '__main__':
     # Initialize game objects for the entire game session
     deck = Deck(8)
-    player = BasicPlayer("Player")
+    player = BasicPlayer("Player", card_counting=True)
     dealer = Dealer()
 
     # Number of rounds to play
-    num_rounds = 5000  # Change this to play more or fewer rounds
+    num_rounds = 1000  # Change this to play more or fewer rounds
 
     # Play multiple rounds
     for i in range(num_rounds):
         print(f"Round {i + 1}")
+        if player.card_counting:
+            print(f'Count: {player.count}')
         init_round(player, dealer, deck)
-
-        # Optionally shuffle the deck here if you're not using a new deck each round
-        # deck.shuffle()
-
-        # Reset player and dealer for the next round if necessary
-        # player.reset()
-        # dealer.reset()
-
-        # Print round summary or update round statistics here (if needed)
 
     # Print game summary (total earnings, win rate, etc.) after all rounds are completed
     print("Game Summary")
