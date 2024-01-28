@@ -5,17 +5,15 @@ from entities.dealer import Dealer
 from copy import deepcopy
 import random
 
-# handle count in:
-# hit_me (dealer)
-# hit_me ()
-
 
 def init_round(player, dealer, deck):
 
     # Create dummy-player variable (for splitting)
     dummy = None
-
+    # Default bet (for non card-counting)
     bet = 1000
+
+    # Determine count-adjusted bet
     if player.card_counting:
         adjusted_bet = player.calculate_bet(player.count, bet, deck.cards_left)
         player.start_round(deck, adjusted_bet)
@@ -34,19 +32,20 @@ def init_round(player, dealer, deck):
         # Do a manual hit_me()
         card = player.hand.cards.pop()
         dummy.hand.cards.append(card)
+        player.hit_me(deck)
+        dummy.hit_me(deck)
 
         if card.rank != 'ace':
             player.hand.value -= card.value
             dummy.hand.value += card.value
-            player.hit_me(deck)
-            dummy.hit_me(deck)
 
-        # Duplicate
-        # copied_deck = deepcopy(deck)
+        # Play round with dummy-hand
         round(dummy, dealer, deck, dummy)
 
+        # Add player and dummy's metrics together
         player.add_totals(dummy)
-    # no split
+
+    # Normal round (no split)
     round(player, dealer, deck, dummy)
 
 
@@ -93,6 +92,7 @@ def round(player, dealer, deck, dummy):
     elif player.hand.value == 21 and len(player.hand.cards) == 2:
         player.gets_blackjack()
 
+    # Compare raw hand values
     elif player.hand.value > dealer.hand.value:
         print('Comparing...')
         player.round_outcome(win=True)
@@ -120,6 +120,7 @@ def round(player, dealer, deck, dummy):
 
 
 if __name__ == '__main__':
+
     # Initialize game objects for the entire game session
     deck = Deck(6)
     player = BasicPlayer("Player", card_counting=False)

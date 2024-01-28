@@ -5,10 +5,10 @@ import random
 class Deck(object):
 
     def __init__(self, number_of_decks):
-
+        # Possible Card.rank values
         self.ranks = ['two', 'three', 'four', 'five', 'six', 'seven', 'eight',
                       'nine', 'ten', 'jack', 'queen', 'king', 'ace']
-
+        # Possible Card.rank values
         self.suits = ['spades', 'hearts', 'diamonds', 'clubs']
 
         # Create empty list of Card objects
@@ -28,9 +28,6 @@ class Deck(object):
 
         # shuffle cards
         random.shuffle(self.cards)
-
-        # Store a copy of the shuffled deck
-        self.original_order = self.cards.copy()
 
     def is_empty(self):
         return len(self.cards) == 0

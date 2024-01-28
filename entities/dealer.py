@@ -71,13 +71,13 @@ class Dealer(object):
     def start_round(self, deck, player):
 
         # Pop 2 cards from deck into Dealer's hand
-        # with SuppressPrint:
         self.hit_me(deck, player)
         self.hit_me(deck, player)
 
         # Set up_card field (if applicable)
         self.up_card = self.hand.cards[1]
 
+        # Print dealer's initial hand
         print('Dealer:', self.hand)
 
     def stand(self):

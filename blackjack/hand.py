@@ -8,6 +8,4 @@ class Hand(object):
         self.aces = 0
 
     def __str__(self):
-        if not self.cards:
-            return "No cards in hand"
-        return ", ".join(str(card) for card in self.cards)
+        return ','.join(str(card) for card in self.cards)
