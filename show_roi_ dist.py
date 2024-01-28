@@ -15,7 +15,7 @@ def run_simulation(num_games, num_rounds_per_game):
     # Loop over the no. of games to simulate
     for game in range(num_games):
         deck = Deck(6)
-        player = BasicPlayer("Player", card_counting=True)
+        player = BasicPlayer("Player", card_counting=False)
         dealer = Dealer()
 
         # Play the specified no. of rounds per game
@@ -43,7 +43,7 @@ def plot_roi_distribution(game_stats):
             color='dodgerblue', alpha=0.7, edgecolor='white')
 
     # Label axis
-    ax.set_title('Distribution of Card Counting ROI Across 500 Games of 1000 Rounds Each',
+    ax.set_title('Distribution of Basic Strategy ROI Across 500 Games of 1000 Rounds Each',
                  fontsize=14, color='white')
     ax.set_xlabel('ROI', fontsize=12, color='white')
     ax.set_ylabel('Frequency', fontsize=12, color='white')
