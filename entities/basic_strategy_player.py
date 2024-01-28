@@ -35,8 +35,6 @@ class BasicPlayer(object):
 
     def hit_me(self, deck):
 
-        print(deck.cards_left)
-
         # If deck is empty, replace and shuffle
         if deck.is_empty():
             number_of_decks = deck.number_of_decks
@@ -53,10 +51,6 @@ class BasicPlayer(object):
         if self.card_counting:
             self.count += card.count_value
 
-        # Decrease the no. of cards left in deck
-        # if deck.cards_left < 1:
-        #     print('EMPTY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
-        #     deck.cards_left = number_of_decks * 52
         deck.cards_left -= 1
 
         # Update hand value
@@ -80,8 +74,6 @@ class BasicPlayer(object):
         # Check if player got a blackjack
         elif len(self.hand.cards) == 2 and self.hand.value == 21:
             self.is_done = True
-
-        print(deck.cards_left)
 
     def get_other_decision(self, dealer):
 
@@ -149,7 +141,13 @@ class BasicPlayer(object):
         self.hit_me(deck)
         self.hit_me(deck)
 
+        # Beginning of round info
         print(f'bet: {bet}')
+        if deck.cards_left > 0:
+            print(f'True count: {self.count / (deck.cards_left / 52.0)}')
+        else:
+            print('True count: N/A')
+        print('--------------------------------------')
         print(f'{self.name}:', self.hand)
 
     # Normal round outcome (ie no splits, doubling, etc takes place)
@@ -227,19 +225,17 @@ class BasicPlayer(object):
     def calculate_bet(self, zen_count, min_bet, cards_left):
         # Calculate the True Count
         decks_remaining = cards_left / 52.0
-        print(f'decks_remaining: {decks_remaining}')
         if decks_remaining > 0:
             true_count = float(zen_count) / decks_remaining
         else:
             true_count = float(zen_count)
 
         # Calculate the bet based on the multiplier
-            print(f'True count: {true_count}')
         bet = min_bet * true_count
 
         # Ensure bet > 0
         if true_count > 1:
-            bet = min(bet, 0)
+            bet = max(bet, 0)
         else:
             bet = 0
 

@@ -16,7 +16,6 @@ def init_round(player, dealer, deck):
     dummy = None
 
     bet = 1000
-    print(deck.cards_left)
     if player.card_counting:
         adjusted_bet = player.calculate_bet(player.count, bet, deck.cards_left)
         player.start_round(deck, adjusted_bet)
@@ -132,8 +131,6 @@ if __name__ == '__main__':
     # Play multiple rounds
     for i in range(num_rounds):
         print(f"Round {i + 1}")
-        if player.card_counting:
-            print(f'Count: {player.count}')
         init_round(player, dealer, deck)
 
     # Print game summary (total earnings, win rate, etc.) after all rounds are completed
