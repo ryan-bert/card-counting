@@ -122,11 +122,11 @@ def round(player, dealer, deck, dummy):
 if __name__ == '__main__':
     # Initialize game objects for the entire game session
     deck = Deck(6)
-    player = BasicPlayer("Player", card_counting=True)
+    player = BasicPlayer("Player", card_counting=False)
     dealer = Dealer()
 
     # Number of rounds to play
-    num_rounds = 75  # Change this to play more or fewer rounds
+    num_rounds = 1000  # Change this to play more or fewer rounds
 
     # Play multiple rounds
     for i in range(num_rounds):

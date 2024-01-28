@@ -143,10 +143,11 @@ class BasicPlayer(object):
 
         # Beginning of round info
         print(f'bet: {bet}')
-        if deck.cards_left > 0:
-            print(f'True count: {self.count / (deck.cards_left / 52.0)}')
-        else:
-            print('True count: N/A')
+        if self.card_counting:
+            if deck.cards_left > 0:
+                print(f'True count: {self.count / (deck.cards_left / 52.0)}')
+            else:
+                print('True count: N/A')
         print('--------------------------------------')
         print(f'{self.name}:', self.hand)
 
