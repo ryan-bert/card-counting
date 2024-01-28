@@ -6,7 +6,17 @@ from entities.dealer import Dealer
 from main import init_round
 
 
-def simulate_average_roi(num_decks_list, num_games, num_rounds_per_game):
+def run_simulation(num_decks_list, num_games, num_rounds_per_game):
+    """
+    Simulate a series of blackjack games and record game statistics.
+
+    Args:
+    - num_games (int): The number of blackjack games to simulate.
+    - num_rounds_per_game (int): The number of rounds to play in each game.
+
+    Returns:
+    - pd.DataFrame: A DataFrame containing game statistics including earnings, bets, and ROI.
+    """
     # Create a DataFrame to hold average ROI data
     average_roi_data = pd.DataFrame(columns=['Num Decks', 'Average ROI'])
 
@@ -23,13 +33,13 @@ def simulate_average_roi(num_decks_list, num_games, num_rounds_per_game):
             for _ in range(num_rounds_per_game):
                 init_round(player, dealer, deck)
 
-            # Calculate the ROI for this game
+            # Calculate the ROI for current game
             roi = player.total_earnings / player.total_bets if player.total_bets != 0 else 0
 
-            # Accumulate the ROI
+            # Accumulate ROI
             total_roi += roi
 
-        # Calculate the average ROI for these games
+        # Calculate the average ROI
         average_roi = total_roi / num_games
 
         # Append to the DataFrame using pd.concat
@@ -40,6 +50,16 @@ def simulate_average_roi(num_decks_list, num_games, num_rounds_per_game):
 
 
 def plot_average_roi(average_roi_data):
+    """
+    Plot the average ROI against the number of decks used.
+
+    Args:
+    - average_roi_data (pd.DataFrame): DataFrame containing average ROI data.
+
+    Returns:
+    - None: Displays the average ROI plot.
+    """
+
     plt.style.use('dark_background')
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.set_facecolor('#262626')  # Slightly darker grey background color
@@ -67,7 +87,7 @@ if __name__ == '__main__':
     num_rounds_per_game = 1000
     num_decks_list = [1, 2, 3, 4, 5, 6, 8]
 
-    average_roi_data = simulate_average_roi(
+    average_roi_data = run_simulation(
         num_decks_list, num_games, num_rounds_per_game)
 
     # Plot the average ROI

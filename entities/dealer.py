@@ -4,6 +4,14 @@ from blackjack.deck import Deck
 
 
 class Dealer(object):
+    """
+    Represents the dealer in a blackjack game.
+
+    Attributes:
+        hand (Hand): The dealer's hand.
+        is_done (bool): True if the dealer stands or goes bust.
+        up_card (Card): The dealer's face-up card (second card).
+    """
 
     def __init__(self):
         self.hand = Hand()
@@ -11,6 +19,13 @@ class Dealer(object):
 
     # Dealer stands on hard 17, hits on soft 17 (ie H17 game)
     def hit_me(self, deck, player):
+        """
+        Dealer requests a new card from the deck.
+
+        Parameters:
+            deck (Deck): The deck of cards.
+            player (BasicPlayer): The player object (for card counting).
+        """
 
         # If deck is empty, replace and shuffle deck
         if deck.is_empty():
@@ -55,6 +70,12 @@ class Dealer(object):
             self.is_done = True
 
     def get_decision(self):
+        """
+        Get the dealer's decision for hitting or standing.
+
+        Returns:
+            str: The decision ('h' for hit, 's' for stand).
+        """
         # Soft hand
         if self.hand.aces > 1:
             if self.hand.value < 18:
@@ -69,7 +90,13 @@ class Dealer(object):
                 return 's'
 
     def start_round(self, deck, player):
+        """
+        Starts a new round for the dealer.
 
+        Parameters:
+            deck (Deck): The deck of cards.
+            player (BasicPlayer): The player object (for card counting).
+        """
         # Pop 2 cards from deck into Dealer's hand
         self.hit_me(deck, player)
         self.hit_me(deck, player)
@@ -81,7 +108,13 @@ class Dealer(object):
         print('Dealer:', self.hand)
 
     def stand(self):
+        """
+        Dealer stands.
+        """
         self.is_done = True
 
     def goes_bust(self):
+        """
+        Dealer goes bust.
+        """
         print('dealer goes bust!!')

@@ -7,6 +7,16 @@ from main import init_round
 
 
 def run_simulation(num_games, num_rounds_per_game):
+    """
+    Simulate a series of blackjack games and record game statistics.
+
+    Args:
+    - num_games (int): The number of blackjack games to simulate.
+    - num_rounds_per_game (int): The number of rounds to play in each game.
+
+    Returns:
+    - pd.DataFrame: A DataFrame containing game statistics including earnings, bets, and ROI.
+    """
 
     # Create a DataFrame to hold game stats
     game_stats = pd.DataFrame(
@@ -35,6 +45,16 @@ def run_simulation(num_games, num_rounds_per_game):
 
 
 def plot_roi_distribution(game_stats):
+    """
+    Plot the distribution of Return on Investment (ROI) across multiple games.
+
+    Args:
+    - game_stats (pd.DataFrame): DataFrame containing game statistics.
+
+    Returns:
+    - None: Displays the ROI distribution plot.
+    """
+
     plt.style.use('dark_background')
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.set_facecolor('#262626')  # Slightly darker grey background color
