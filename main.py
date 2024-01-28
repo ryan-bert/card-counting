@@ -7,6 +7,14 @@ import random
 
 
 def init_round(player, dealer, deck):
+    """
+    Initialize a round of blackjack.
+
+    Parameters:
+        player (BasicPlayer): The player object.
+        dealer (Dealer): The dealer object.
+        deck (Deck): The deck of cards.
+    """
 
     # Create dummy-player variable (for splitting)
     dummy = None
@@ -50,6 +58,15 @@ def init_round(player, dealer, deck):
 
 
 def round(player, dealer, deck, dummy):
+    """
+    Play a round of blackjack.
+
+    Parameters:
+        player (BasicPlayer): The player object.
+        dealer (Dealer): The dealer object.
+        deck (Deck): The deck of cards.
+        dummy (BasicPlayer): The dummy player object for splitting (optional).
+    """
 
     if dummy is not None and player.hand.cards[0].rank == 'ace':
         print(f'Bet: {player.current_bet}')
@@ -120,6 +137,11 @@ def round(player, dealer, deck, dummy):
 
 
 if __name__ == '__main__':
+    """
+    Main function for playing multiple rounds of blackjack.
+
+    Initialize game objects and play multiple rounds, then print a game summary.
+    """
 
     # Initialize game objects for the entire game session
     deck = Deck(6)

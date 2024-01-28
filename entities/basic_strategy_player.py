@@ -7,6 +7,25 @@ from tables.pair_splitting import PairSplitting
 
 
 class BasicPlayer(object):
+    """
+    Represents a basic blackjack player.
+
+    Attributes:
+        hand (Hand): The player's hand.
+        name (str): The player's name.
+        is_done (bool): True if the player stands or goes bust.
+        current_bet (int): The current bet amount.
+        total_bets (int): Total bets placed.
+        total_earnings (int): Total earnings.
+        rounds (int): Total rounds played.
+        wins (int): Total rounds won.
+        draws (int): Total rounds drawn.
+        losses (int): Total rounds lost.
+        busts (int): Total times player went bust.
+        stands (int): Total times player stood.
+        card_counting (bool): True if card counting is enabled.
+        count (int): Current card counting count.
+    """
 
     def __init__(self, name, card_counting=False):
         self.hand = Hand()
@@ -34,7 +53,12 @@ class BasicPlayer(object):
             self.card_counting = False
 
     def hit_me(self, deck):
+        """
+        Player requests a new card from the deck.
 
+        Parameters:
+            deck (Deck): The deck of cards.
+        """
         # If deck is empty, replace and shuffle
         if deck.is_empty():
             number_of_decks = deck.number_of_decks
@@ -76,7 +100,15 @@ class BasicPlayer(object):
             self.is_done = True
 
     def get_other_decision(self, dealer):
+        """
+        Get the player's decision for non-split scenarios.
 
+        Parameters:
+            dealer (Dealer): The dealer's hand.
+
+        Returns:
+            str: The decision ('h' for hit, 's' for stand, 'd' for double down).
+        """
         # Default
         decision = 's'
         # Util
@@ -98,7 +130,15 @@ class BasicPlayer(object):
         return decision
 
     def get_split_decision(self, dealer):
+        """
+        Get the player's decision for splitting pairs.
 
+        Parameters:
+            dealer (Dealer): The dealer's hand.
+
+        Returns:
+            str: The decision ('y' for yes, 'n' for no).
+        """
         # Initialize variables
         decision = 'n'
         deck_length = len(self.hand.cards)
@@ -111,29 +151,46 @@ class BasicPlayer(object):
         return decision
 
     def doubles(self):
-
+        """
+        Player doubles down the current bet.
+        """
         self.total_bets += self.current_bet
         self.current_bet *= 2
         self.is_done = True
         print("Player doubled down!")
 
     def gets_blackjack(self):
-
+        """
+        Player gets a blackjack.
+        """
         self.current_bet *= 1.5
         self.is_done = True
         print('Blackjack!!')
         self.round_outcome(win=True)
 
     def goes_bust(self):
+        """
+        Player goes bust.
+        """
         self.busts += 1
         print("Player goes bust!")
         self.round_outcome(loss=True)
 
     def stand(self):
+        """
+        Player stands.
+        """
         self.is_done = True
         self.stands += 1
 
     def start_round(self, deck, bet=10):
+        """
+        Starts a new round for the player.
+
+        Parameters:
+            deck (Deck): The deck of cards.
+            bet (int): The initial bet for the round (default is 10).
+        """
         # Update bet variables
         self.current_bet = bet
         self.total_bets += bet
@@ -153,6 +210,14 @@ class BasicPlayer(object):
 
     # Normal round outcome (ie no splits, doubling, etc takes place)
     def round_outcome(self, win=False, draw=False, loss=False):
+        """
+        Handles the outcome of a round.
+
+        Parameters:
+            win (bool): True if the player wins the round.
+            draw (bool): True if the round is a draw.
+            loss (bool): True if the player loses the round.
+        """
 
         self.rounds += 1
 
@@ -177,6 +242,12 @@ class BasicPlayer(object):
         self.is_done = False
 
     def split(self):
+        """
+        Creates a new player for the split hand.
+
+        Returns:
+            BasicPlayer: A new player for the split hand.
+        """
         # Create a new player for the split hand
         split_player = BasicPlayer("Dummy")
 
@@ -188,6 +259,12 @@ class BasicPlayer(object):
         return split_player
 
     def add_totals(self, other):
+        """
+        Adds the metrics of another player to this player.
+
+        Parameters:
+            other (BasicPlayer): Another player's metrics to add.
+        """
 
         if other is not None:
             self.total_bets += other.total_bets
@@ -208,6 +285,15 @@ class BasicPlayer(object):
         return PairSplitting.table.loc[index, column]
 
     def _search_hard_table(self, dealer):
+        """
+        Search the hard totals strategy table.
+
+        Parameters:
+            dealer (Dealer): The dealer's hand.
+
+        Returns:
+            str: The decision ('h' for hit, 's' for stand, 'd' for double down).
+        """
         # Parameters for DataFrame.loc()
         index = self.hand.value
         column = dealer.up_card.rank
@@ -216,6 +302,15 @@ class BasicPlayer(object):
         return HardTotals.table.loc[index, column]
 
     def _search_soft_table(self, dealer):
+        """
+        Search the soft totals strategy table.
+
+        Parameters:
+            dealer (Dealer): The dealer's hand.
+
+        Returns:
+            str: The decision ('h' for hit, 's' for stand, 'd' for double down).
+        """
         # Parameters for DataFrame.loc()
         index = self.hand.value
         column = dealer.up_card.rank
@@ -224,6 +319,17 @@ class BasicPlayer(object):
         return SoftTotals.table.loc[index, column]
 
     def calculate_bet(self, zen_count, bet_unit, cards_left):
+        """
+        Calculates the bet based on card counting.
+
+        Parameters:
+            zen_count (int): The current card counting count.
+            bet_unit (int): The base bet unit.
+            cards_left (int): The number of cards left in the deck.
+
+        Returns:
+            int: The calculated bet amount.
+        """
 
         # Calculate the True Count
         decks_remaining = cards_left / 52.0
