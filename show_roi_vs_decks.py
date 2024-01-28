@@ -83,8 +83,8 @@ def plot_average_roi(average_roi_data):
 
 if __name__ == '__main__':
     # Set simulation parameters
-    num_games = 50
-    num_rounds_per_game = 1000
+    num_games = 10
+    num_rounds_per_game = 400
     num_decks_list = [1, 2, 3, 4, 5, 6, 8]
 
     average_roi_data = run_simulation(
