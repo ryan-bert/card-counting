@@ -16,9 +16,9 @@ def init_round(player, dealer, deck):
     dummy = None
 
     bet = 1000
-
+    print(deck.cards_left)
     if player.card_counting:
-        adjusted_bet = player.calculate_bet(player.count, bet, deck)
+        adjusted_bet = player.calculate_bet(player.count, bet, deck.cards_left)
         player.start_round(deck, adjusted_bet)
     else:
         player.start_round(deck, bet)
@@ -122,12 +122,12 @@ def round(player, dealer, deck, dummy):
 
 if __name__ == '__main__':
     # Initialize game objects for the entire game session
-    deck = Deck(8)
+    deck = Deck(6)
     player = BasicPlayer("Player", card_counting=True)
     dealer = Dealer()
 
     # Number of rounds to play
-    num_rounds = 1000  # Change this to play more or fewer rounds
+    num_rounds = 75  # Change this to play more or fewer rounds
 
     # Play multiple rounds
     for i in range(num_rounds):

@@ -35,10 +35,12 @@ class BasicPlayer(object):
 
     def hit_me(self, deck):
 
+        print(deck.cards_left)
+
         # If deck is empty, replace and shuffle
         if deck.is_empty():
             number_of_decks = deck.number_of_decks
-            deck = Deck(number_of_decks)
+            deck.shuffle(number_of_decks)
             # Reset count
             if self.card_counting:
                 self.count = 0
@@ -50,6 +52,12 @@ class BasicPlayer(object):
         # Add to count
         if self.card_counting:
             self.count += card.count_value
+
+        # Decrease the no. of cards left in deck
+        # if deck.cards_left < 1:
+        #     print('EMPTY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
+        #     deck.cards_left = number_of_decks * 52
+        deck.cards_left -= 1
 
         # Update hand value
         self.hand.value += card.value
@@ -72,6 +80,8 @@ class BasicPlayer(object):
         # Check if player got a blackjack
         elif len(self.hand.cards) == 2 and self.hand.value == 21:
             self.is_done = True
+
+        print(deck.cards_left)
 
     def get_other_decision(self, dealer):
 
@@ -214,11 +224,10 @@ class BasicPlayer(object):
         # returns 'h', 's' or 'd'
         return SoftTotals.table.loc[index, column]
 
-    def calculate_bet(self, zen_count, min_bet, deck):
+    def calculate_bet(self, zen_count, min_bet, cards_left):
         # Calculate the True Count
-        decks_remaining = deck.get_remaining_length()
+        decks_remaining = cards_left / 52.0
         print(f'decks_remaining: {decks_remaining}')
-        print(len(deck.cards))
         if decks_remaining > 0:
             true_count = float(zen_count) / decks_remaining
         else:

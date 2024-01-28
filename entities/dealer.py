@@ -15,7 +15,7 @@ class Dealer(object):
         # If deck is empty, replace and shuffle deck
         if deck.is_empty():
             number_of_decks = deck.number_of_decks
-            deck = Deck(number_of_decks)
+            deck.shuffle(number_of_decks)
             # Reset count
             if player.card_counting:
                 self.count = 0
@@ -25,9 +25,13 @@ class Dealer(object):
         self.hand.cards.append(card)
 
         # Add to count
-        # Add to count
         if player.card_counting:
             player.count += card.count_value
+
+        # Decrease the no. of cards left in deck
+        # if deck.cards_left < 1:
+        #     deck.cards_left = number_of_decks * 52
+        deck.cards_left -= 1
 
         # Update hand value
         self.hand.value += card.value
