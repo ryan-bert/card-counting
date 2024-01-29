@@ -68,7 +68,6 @@ def plot_roi_distribution(game_stats):
     ax.set_xlabel('ROI', fontsize=12, color='white')
     ax.set_ylabel('Frequency', fontsize=12, color='white')
 
-    # Mean line
     ax.grid(True, which='major', linestyle='--', linewidth=0.5, color='grey')
     ax.tick_params(colors='white', which='both')
 
