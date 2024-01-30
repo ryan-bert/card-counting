@@ -57,7 +57,7 @@ def plot_roi_distribution(game_stats):
 
     plt.style.use('dark_background')
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.set_facecolor('#262626')  # Slightly darker grey background color
+    ax.set_facecolor('#262626')
 
     ax.hist(game_stats['ROI'], bins=20,
             color='dodgerblue', alpha=0.7, edgecolor='white')
@@ -68,6 +68,7 @@ def plot_roi_distribution(game_stats):
     ax.set_xlabel('ROI', fontsize=12, color='white')
     ax.set_ylabel('Frequency', fontsize=12, color='white')
 
+    # Grid-lines
     ax.grid(True, which='major', linestyle='--', linewidth=0.5, color='grey')
     ax.tick_params(colors='white', which='both')
 
@@ -97,3 +98,18 @@ if __name__ == '__main__':
 
     # Plot the ROI distribution
     plot_roi_distribution(game_stats)
+
+    # Configure
+    plt.style.use('dark_background')
+    plt.tight_layout()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.set_facecolor('#262626')
+
+    # Label axis
+    ax.set_title('Title', fontsize=14, color='white')
+    ax.set_xlabel('X-axis label', fontsize=12, color='white')
+    ax.set_ylabel('Y-axis label', fontsize=12, color='white')
+
+    # Grid-lines
+    ax.grid(True, which='major', linestyle='--', linewidth=0.5, color='grey')
+    ax.tick_params(colors='white', which='both')
