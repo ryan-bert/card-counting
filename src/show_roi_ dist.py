@@ -90,7 +90,7 @@ def plot_roi_distribution(game_stats):
 
 if __name__ == '__main__':
     # Set simulation parameters
-    num_games = 500
+    num_games = 1000
     num_rounds_per_game = 1000
 
     game_stats = run_simulation(num_games, num_rounds_per_game)
