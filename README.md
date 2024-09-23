@@ -1,7 +1,6 @@
 # Description
 This project is a Python-based simulation of Blackjack card counting. It includes a detailed implementation of the game mechanics, basic strategy, and the Zen card counting technique. The simulator allows users to run multiple rounds and games, tracking various statistics like total earnings, bets, and Return on Investment (ROI).
 
-
 # Features
 - Simulation of Blackjack game mechanics.
 - Implementation of basic strategy and card counting.
@@ -9,17 +8,23 @@ This project is a Python-based simulation of Blackjack card counting. It include
 - Statistical analysis of player performance over multiple games.
 - Visualization of ROI distributions.
 
-
 # Usage
 
 To run the simulation on a chosen no. of rounds, run:
-```python main.py```
+```bash
+python main.py
+```
 
 To analyze the ROI distribution, time series or effect of deck size run any of the following scripts:
-```python show_roi_dist.py```
-```show_roi_time_series.py```
-```show_roi_vs_decks.py```
-
+```bash
+python show_roi_dist.py
+```
+```bash
+python show_roi_time_series.py
+```
+```bash
+python show_roi_vs_decks.py
+```
 
 # Game Rules
 
